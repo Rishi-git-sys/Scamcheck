@@ -16,7 +16,11 @@ import { createClient } from "@/lib/supabase/client";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/dashboard";
+  const rawRedirect = searchParams.get("redirectTo") || "/dashboard";
+  const redirectTo =
+    rawRedirect.startsWith("/") && !rawRedirect.startsWith("//") && !rawRedirect.startsWith("/\\") && !rawRedirect.includes("://")
+      ? rawRedirect
+      : "/dashboard";
   const callbackError = searchParams.get("error");
 
   const supabase = createClient();

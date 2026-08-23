@@ -165,6 +165,50 @@
   transform: translateY(1px);
 }
 
+.interactive-card {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease, box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.interactive-btn {
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.interactive-btn:hover {
+  transform: scale(1.015);
+}
+
+.interactive-btn:active {
+  transform: scale(0.98);
+}
+
+.nav-item-interaction {
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.nav-item-interaction:active {
+  transform: scale(0.98);
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter-animation {
+  animation: pageFadeIn 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* Hero Keyframe Animations */
 @keyframes heroFadeUp {
   from {
@@ -247,5 +291,6 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+    transform: none !important;
   }
 }

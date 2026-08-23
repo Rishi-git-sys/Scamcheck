@@ -33,6 +33,7 @@ begin
 end;
 $$ language plpgsql;
 
+
 create trigger on_profiles_updated
   before update on public.profiles
   for each row
@@ -67,7 +68,7 @@ create trigger on_auth_user_created
 create table if not exists public.verifications (
   id uuid primary key default gen_random_uuid(),
   user_id uuid references auth.users(id) on delete cascade not null,
-  input_type text not null check (input_type in ('url', 'manual')),
+  input_type text not null check (input_type in ('url', 'manual', 'company', 'evidence')),
   url text,
   company_name text,
   job_title text,
@@ -127,13 +128,25 @@ create policy "Users can view signals of their verifications"
     )
   );
 
-create policy "Users can insert signals for their verifications"
+create policy "Users can delete signals for their verifications"
   on public.risk_signals
-  for insert
-  with check (
+  for delete
+  using (
     exists (
       select 1 from public.verifications
       where verifications.id = risk_signals.verification_id
       and verifications.user_id = auth.uid()
     )
   );
+
+-- ==============================================================================
+-- 7. Query Performance Indexes
+-- ==============================================================================
+create index if not exists idx_verifications_user_id_created_at 
+  on public.verifications (user_id, created_at desc);
+
+create index if not exists idx_verifications_risk_level 
+  on public.verifications (user_id, risk_level);
+
+create index if not exists idx_risk_signals_verification_id 
+  on public.risk_signals (verification_id);

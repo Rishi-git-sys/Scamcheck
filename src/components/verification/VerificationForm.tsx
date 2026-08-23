@@ -5,8 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Link2, AlignLeft, ArrowRight, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { analyzeOpportunity } from "@/lib/risk-engine/analyzer";
-import { OpportunityInput, RiskAnalysis } from "@/lib/risk-engine/types";
-import { UrlIntelligence } from "@/lib/url-intelligence/types";
+import { OpportunityInput } from "@/lib/risk-engine/types";
 import AnalysisProgress from "./AnalysisProgress";
 
 export default function VerificationForm() {
@@ -62,7 +61,7 @@ export default function VerificationForm() {
           return;
         }
 
-        // Call server-side URL Intelligence API
+        // Call server-side URL Intelligence API (which also saves to Supabase)
         const response = await fetch("/api/analyze-url", {
           method: "POST",
           headers: {
@@ -79,51 +78,12 @@ export default function VerificationForm() {
           return;
         }
 
-        const intelligence = data.intelligence as UrlIntelligence;
-        const analysis = data.analysis as RiskAnalysis;
-
-        // Insert into public.verifications
-        const { data: verificationData, error: insertError } = await supabase
-          .from("verifications")
-          .insert({
-            user_id: user.id,
-            input_type: "url",
-            url: intelligence.originalUrl,
-            company_name: intelligence.pageTitle || intelligence.rootDomain || null,
-            job_title: intelligence.jobRelated ? "Web Opportunity Listing" : null,
-            recruiter_email: intelligence.emails[0] || null,
-            salary_text: null,
-            contact_method: null,
-            payment_requested: null,
-            job_description: intelligence.metaDescription || null,
-            risk_score: analysis.score,
-            risk_level: analysis.level,
-            summary: analysis.summary,
-            recommendations: analysis.recommendations,
-            metadata: intelligence,
-          })
-          .select("id")
-          .single();
-
-        if (insertError || !verificationData) {
-          setErrorMessage("Unable to save your verification. Please check your connection and try again.");
+        // The API now handles saving to Supabase and returns the verificationId
+        const verificationId = data.verificationId as string;
+        if (!verificationId) {
+          setErrorMessage("Unable to save your verification. Please try again.");
           setIsAnalyzing(false);
           return;
-        }
-
-        const verificationId = verificationData.id;
-
-        // Insert risk signals if any
-        if (analysis.signals && analysis.signals.length > 0) {
-          const signalRows = analysis.signals.map((sig) => ({
-            verification_id: verificationId,
-            title: sig.title,
-            description: sig.description,
-            severity: sig.severity,
-            points: sig.points,
-          }));
-
-          await supabase.from("risk_signals").insert(signalRows);
         }
 
         router.push(`/dashboard/result/${verificationId}`);
@@ -178,8 +138,10 @@ export default function VerificationForm() {
 
         const verificationId = verificationData.id;
 
-        if (analysis.signals.length > 0) {
-          const signalRows = analysis.signals.map((sig) => ({
+        // Only store real risk signals (not informational observations)
+        const signalsToStore = analysis.signals.filter((sig) => !sig.isInformational);
+        if (signalsToStore.length > 0) {
+          const signalRows = signalsToStore.map((sig) => ({
             verification_id: verificationId,
             title: sig.title,
             description: sig.description,

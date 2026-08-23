@@ -46,7 +46,7 @@ export default function DashboardSidebar({
 
   const exploreNav = [
     { name: "Companies", href: "/dashboard/companies", icon: Building2, exact: false },
-    { name: "Safety guide", href: "/#trust-section", icon: BookOpen, exact: false },
+    { name: "Safety guide", href: "/dashboard/safety-guide", icon: BookOpen, exact: false },
   ];
 
   const accountNav = [
@@ -60,6 +60,39 @@ export default function DashboardSidebar({
     return pathname.startsWith(itemHref);
   };
 
+  const renderNavItem = (item: { name: string; href: string; icon: any; exact: boolean }) => {
+    const Icon = item.icon;
+    const active = isActive(item.href, item.exact);
+    return (
+      <Link
+        key={item.name}
+        href={item.href}
+        onClick={onCloseMobile}
+        className={`group relative flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all duration-150 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/40 focus-visible:ring-offset-1 focus-visible:ring-offset-background ${
+          active
+            ? "bg-accent-light text-accent-primary font-semibold border border-accent-light-border/80 shadow-xs"
+            : "text-secondary-color hover:bg-card hover:text-primary-color hover:translate-x-0.5 border border-transparent hover:border-subtle/60"
+        }`}
+      >
+        {active && (
+          <span
+            className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1 h-3.5 rounded-full bg-accent-primary transition-all duration-150"
+            aria-hidden="true"
+          />
+        )}
+        <Icon
+          className={`w-4 h-4 shrink-0 transition-all duration-150 ${
+            active
+              ? "text-accent-primary ml-1"
+              : "text-tertiary-color group-hover:text-primary-color group-hover:translate-x-0.5 group-hover:scale-[1.04]"
+          }`}
+          strokeWidth={active ? 2.2 : 1.8}
+        />
+        <span className="tracking-[-0.01em]">{item.name}</span>
+      </Link>
+    );
+  };
+
   const sidebarContent = (
     <div className="flex flex-col h-full bg-app border-r border-subtle w-[220px] select-none p-4 justify-between transition-colors">
       <div>
@@ -67,10 +100,10 @@ export default function DashboardSidebar({
         <div className="px-2 pt-1 pb-6 flex items-center justify-between border-b border-subtle">
           <Link
             href="/"
-            className="flex items-center gap-2 text-primary-color group"
+            className="flex items-center gap-2 text-primary-color group transition-transform active:scale-[0.98]"
             onClick={onCloseMobile}
           >
-            <div className="w-6 h-6 rounded-md bg-accent-light flex items-center justify-center text-accent-primary">
+            <div className="w-6 h-6 rounded-md bg-accent-light flex items-center justify-center text-accent-primary group-hover:scale-105 transition-transform duration-150">
               <ShieldCheck className="w-3.5 h-3.5" strokeWidth={2} />
             </div>
             <span className="text-[15px] font-medium tracking-tight">
@@ -98,25 +131,7 @@ export default function DashboardSidebar({
               Workspace
             </span>
             <div className="space-y-1">
-              {workspaceNav.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href, item.exact);
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={onCloseMobile}
-                    className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors ${
-                      active
-                        ? "bg-accent-light text-accent-primary"
-                        : "text-secondary-color hover:bg-card hover:text-primary-color"
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 shrink-0" strokeWidth={1.8} />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
+              {workspaceNav.map(renderNavItem)}
             </div>
           </div>
 
@@ -126,25 +141,7 @@ export default function DashboardSidebar({
               Explore
             </span>
             <div className="space-y-1">
-              {exploreNav.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href, item.exact);
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={onCloseMobile}
-                    className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors ${
-                      active
-                        ? "bg-accent-light text-accent-primary"
-                        : "text-secondary-color hover:bg-card hover:text-primary-color"
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 shrink-0" strokeWidth={1.8} />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
+              {exploreNav.map(renderNavItem)}
             </div>
           </div>
 
@@ -154,25 +151,7 @@ export default function DashboardSidebar({
               Account
             </span>
             <div className="space-y-1">
-              {accountNav.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href, item.exact);
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={onCloseMobile}
-                    className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors ${
-                      active
-                        ? "bg-accent-light text-accent-primary"
-                        : "text-secondary-color hover:bg-card hover:text-primary-color"
-                    }`}
-                  >
-                    <Icon className="w-4 h-4 shrink-0" strokeWidth={1.8} />
-                    <span>{item.name}</span>
-                  </Link>
-                );
-              })}
+              {accountNav.map(renderNavItem)}
             </div>
           </div>
 
