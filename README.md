@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛡️ ScamCheck
 
-## Getting Started
+### AI-Assisted Job & Internship Opportunity Verification Platform
 
-First, run the development server:
+> **Helping students identify suspicious job and internship opportunities before they lose money or share sensitive information.**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏆 Hackathon Team
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Team Name:** X-CEPTION  
+**Team ID:** `HS2026-188`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 👥 Team Members
 
-## Learn More
+| # | Name |
+|---|---|
+| 1 | Vignesh G |
+| 2 | Rishi R |
+| 3 | Prathap M |
+| 4 | Pragadeesh S |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔗 Live Demo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Production:**  
+https://x-ception.vercel.app/
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 📌 Problem Statement
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Students increasingly receive job and internship opportunities through platforms such as LinkedIn, WhatsApp, Telegram, email, and other online channels.
+
+While many opportunities are legitimate, fraudulent recruiters and fake job offers can look convincing. Students may encounter:
+
+- Fake internship offers
+- Impersonated companies
+- Fake recruiters
+- Upfront registration or processing fees
+- Suspicious websites and domains
+- Requests for sensitive personal information
+- Urgent payment demands
+- Fake offer letters
+- Unofficial recruitment channels
+
+Students often do not have a simple and centralized way to verify whether an opportunity is trustworthy before responding, paying money, or sharing sensitive information.
+
+### The Core Problem
+
+There is a need for a **student-friendly opportunity verification platform** that can analyze different forms of job and internship evidence and provide an understandable, evidence-backed risk assessment.
+
+---
+
+# 💡 Proposed Solution
+
+## ScamCheck
+
+**ScamCheck** is an AI-assisted opportunity verification platform designed to help students evaluate suspicious job and internship opportunities.
+
+Instead of relying on a simple "scam" or "not scam" prediction, ScamCheck analyzes multiple evidence sources and explains **why an opportunity may require caution**.
+
+Users can submit:
+
+- 🔗 Job or internship URL
+- 📸 Screenshot of a job/message/offer
+- 📝 Pasted opportunity text
+- 📄 Offer-letter evidence
+
+ScamCheck then analyzes the available evidence using multiple verification and intelligence layers.
+
+---
+
+# 🔍 How ScamCheck Works
+
+```text
+                 USER
+                  │
+                  ▼
+        ┌─────────────────────┐
+        │  Evidence Intake    │
+        └──────────┬──────────┘
+                   │
+       ┌───────────┼───────────┐
+       ▼           ▼           ▼
+      URL      Screenshot      Text
+       │           │           │
+       ▼           ▼           ▼
+   Domain      OCR / Image    Content
+ Intelligence  Analysis      Analysis
+       │           │           │
+       └───────────┼───────────┘
+                   ▼
+        ┌─────────────────────┐
+        │ Entity Extraction   │
+        │ Company / Recruiter │
+        │ URL / Email / Phone │
+        └──────────┬──────────┘
+                   ▼
+        ┌─────────────────────┐
+        │ Verification Engine │
+        └──────────┬──────────┘
+                   │
+       ┌───────────┼───────────┐
+       ▼           ▼           ▼
+    Company     Recruiter    Threat
+ Verification  Verification Intelligence
+       │           │           │
+       └───────────┼───────────┘
+                   ▼
+        ┌─────────────────────┐
+        │ Signal Correlation  │
+        └──────────┬──────────┘
+                   ▼
+        ┌─────────────────────┐
+        │ Deterministic Risk  │
+        │       Engine        │
+        └──────────┬──────────┘
+                   ▼
+        ┌─────────────────────┐
+        │ AI-Assisted Analysis│
+        └──────────┬──────────┘
+                   ▼
+        ┌─────────────────────┐
+        │ Unified ScamCheck   │
+        │       Report        │
+        └─────────────────────┘
