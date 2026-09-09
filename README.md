@@ -798,18 +798,7 @@ ScamCheck deals with potentially sensitive opportunity evidence. Responsible han
 - Risk assessments should communicate uncertainty appropriately.
 - The system should avoid presenting probabilistic or incomplete analysis as certainty.
 - Human judgment remains important for high-impact decisions.
-
----
-
-# 20. Team
-
-| # | Name |
-|---|---|
-| 1 | Vignesh G |
-| 2 | Rishi R |
-| 3 | Prathap M |
-| 4 | Pragadeesh S |
-
+- 
 ### Team Project Context
 
 **ScamCheck** was originally developed as a team project and is now being documented and extended as a college academic project.
