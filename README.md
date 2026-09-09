@@ -2,7 +2,7 @@
 
 ## AI-Assisted Job & Internship Opportunity Verification System
 
-ScamCheck is a web-based opportunity verification system designed to help students evaluate potentially suspicious job and internship opportunities before applying, making payments, or sharing sensitive information.
+ScamCheck is an individual web-based project designed to help students evaluate potentially suspicious job and internship opportunities before applying, making payments, or sharing sensitive information.
 
 The system combines URL analysis, company verification, recruiter verification, evidence analysis, OCR, threat intelligence, risk assessment, and AI-assisted explanation into a centralized workflow.
 
@@ -10,21 +10,15 @@ The system combines URL analysis, company verification, recruiter verification, 
 
 ---
 
-## Team
+## Project Information
 
 | Detail | Information |
 |---|---|
-| **Team ID** | HS2026-188 |
-| **Project** | ScamCheck |
+| **Project Type** | Individual Project |
+| **Project Name** | ScamCheck |
 | **Domain** | AI + Cybersecurity |
-| **Users** | Students and job/internship seekers |
-
-### Team Members
-
-- Vignesh G
-- Rishi R
-- Prathap M
-- Pragadeesh S
+| **Developer** | Rishi R |
+| **Primary Users** | Students and job/internship seekers |
 
 ---
 
@@ -135,7 +129,7 @@ ScamCheck accepts opportunity evidence and combines multiple analysis stages int
 
 ---
 
-## 5. Empathy Portfolio
+## 5. User Research and Empathy
 
 The user-research stage focuses on understanding how students discover opportunities, what they verify, where uncertainty occurs, and what support they need before proceeding.
 
@@ -151,7 +145,7 @@ The user-research stage focuses on understanding how students discover opportuni
 
 ### Academic Research Evidence
 
-Actual interviews, observations, photographs, and participant feedback should be maintained as real project evidence and anonymized before publication.
+Actual interviews, observations, photographs, and participant feedback should be maintained as genuine project evidence and anonymized before publication.
 
 Recommended structure:
 
@@ -224,11 +218,11 @@ Implementation
 
 ### AI Prompt Register
 
-The academic submission should record the **actual prompts used by the team**, together with the resulting decision and implementation.
+The academic submission should record the **actual prompts used during development**, together with the resulting decision and implementation.
 
 | # | Actual Prompt | Suggestion | Decision | Verification / Reason | Result |
 |---|---|---|---|---|---|
-| 1 | Actual project prompt | Architecture suggestion | Adopt / Modify / Reject | Team review | Implementation |
+| 1 | Actual project prompt | Architecture suggestion | Adopt / Modify / Reject | Project review | Implementation |
 | 2 | Actual project prompt | OCR suggestion | Adopt / Modify / Reject | Testing | Implementation |
 | 3 | Actual project prompt | Risk-analysis suggestion | Adopt / Modify / Reject | Verification | Implementation |
 
@@ -320,7 +314,7 @@ prototype/
 
 ## 11. Prototype Validation
 
-Prototype validation should use at least three **real testers**.
+Prototype validation should use real testers where required by the academic evaluation.
 
 For each tester, record:
 
@@ -620,7 +614,7 @@ All research evidence must be genuine and anonymized before publication.
 - [ ] Rejected AI suggestions documented
 - [ ] AI correction examples documented
 - [ ] Prototype screenshots added
-- [ ] Feedback from at least three real testers collected
+- [ ] Feedback from real testers collected where required
 - [ ] Changes from tester feedback documented
 - [ ] Final testing evidence recorded
 - [ ] Installation instructions verified
