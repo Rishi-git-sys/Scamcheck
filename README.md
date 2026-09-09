@@ -2,7 +2,9 @@
 
 ## AI-Assisted Job & Internship Opportunity Verification System
 
-ScamCheck is an individual web-based project designed to help students evaluate potentially suspicious job and internship opportunities before applying, making payments, or sharing sensitive information.
+ScamCheck is an **individual web-based project** designed to help students evaluate potentially suspicious job and internship opportunities before applying, making payments, or sharing sensitive information.
+
+The project is currently at **35% development progress**, representing the initial working implementation and prototype stage. The remaining work focuses on completing and validating the full verification workflow.
 
 The system combines URL analysis, company verification, recruiter verification, evidence analysis, OCR, threat intelligence, risk assessment, and AI-assisted explanation into a centralized workflow.
 
@@ -16,13 +18,14 @@ The system combines URL analysis, company verification, recruiter verification, 
 |---|---|
 | **Project Type** | Individual Project |
 | **Project Name** | ScamCheck |
+| **Development Progress** | **35%** |
 | **Domain** | AI + Cybersecurity |
 | **Developer** | Rishi R |
 | **Primary Users** | Students and job/internship seekers |
 
 ---
 
-## 1. Project Overview
+# 1. Project Overview
 
 ### Objective
 
@@ -36,7 +39,61 @@ The system is designed to move beyond a simple `SCAM / NOT SCAM` answer and prov
 
 ---
 
-## 2. Problem Context
+# 2. Development Progress — 35%
+
+The current project represents the **35% development milestone** required for the initial project stage.
+
+| Work Area | Current Status | Progress Stage |
+|---|---|---|
+| Problem identification | Completed | ✅ |
+| Problem statement | Completed | ✅ |
+| Solution ideation | Completed | ✅ |
+| Project architecture | Completed | ✅ |
+| Next.js + TypeScript setup | Completed | ✅ |
+| Initial UI / prototype | Implemented | ✅ |
+| Authentication | Implemented | ✅ |
+| Dashboard structure | Implemented | ✅ |
+| URL analysis foundation | Implemented / being refined | 🔄 |
+| Evidence/OCR foundation | Implemented / being refined | 🔄 |
+| Company verification | In development | 🔄 |
+| Recruiter verification | In development | 🔄 |
+| Threat intelligence integration | In development | 🔄 |
+| Risk engine refinement | In development | 🔄 |
+| Final report refinement | In development | 🔄 |
+| Full user validation | Pending | ⏳ |
+| Final production release | Pending | ⏳ |
+
+### 35% Milestone Goal
+
+The 35% milestone establishes the project's foundation:
+
+```text
+Problem Definition
+       ↓
+Solution Design
+       ↓
+Technology Selection
+       ↓
+Project Architecture
+       ↓
+Initial Application
+       ↓
+Prototype / Core Features
+       ↓
+        35%
+       ↓
+Further Development
+       ↓
+Testing & Validation
+       ↓
+Final System
+```
+
+> **Note:** The 35% figure represents the current development milestone, not a claim that every listed feature is production-complete.
+
+---
+
+# 3. Problem Context
 
 Students receive opportunities through career portals, professional networks, email, messaging platforms, social media, and direct recruiter communication.
 
@@ -54,7 +111,7 @@ The practical challenge is not only scam detection; it is performing a multi-ste
 
 ---
 
-## 3. Proposed Solution
+# 4. Proposed Solution
 
 ScamCheck accepts opportunity evidence and combines multiple analysis stages into a single workflow.
 
@@ -80,7 +137,7 @@ ScamCheck accepts opportunity evidence and combines multiple analysis stages int
 
 ---
 
-## 4. System Workflow
+# 5. System Workflow
 
 ```text
                          USER
@@ -129,7 +186,7 @@ ScamCheck accepts opportunity evidence and combines multiple analysis stages int
 
 ---
 
-## 5. User Research and Empathy
+# 6. User Research and Empathy
 
 The user-research stage focuses on understanding how students discover opportunities, what they verify, where uncertainty occurs, and what support they need before proceeding.
 
@@ -161,7 +218,7 @@ research/
 
 ---
 
-## 6. Ideation
+# 7. Ideation
 
 ### Solution Directions Considered
 
@@ -184,7 +241,7 @@ A purely AI-based scam classification was not selected because AI output can be 
 
 ---
 
-## 7. AI Interaction Audit
+# 8. AI Interaction Audit
 
 AI was used as an assistive tool during ideation and development. AI suggestions were reviewed against project requirements, repository implementation, and available evidence.
 
@@ -228,7 +285,7 @@ The academic submission should record the **actual prompts used during developme
 
 ---
 
-## 8. Technical Architecture
+# 9. Technical Architecture
 
 ### Application Layer
 
@@ -268,7 +325,7 @@ src/lib/
 
 ---
 
-## 9. Implemented Features
+# 10. Implemented Features
 
 - **URL Analysis** — `/api/analyze-url`
 - **Evidence Analysis** — `/api/analyze-evidence`
@@ -283,7 +340,7 @@ src/lib/
 
 ---
 
-## 10. Prototype
+# 11. Prototype
 
 The prototype is designed to let a student move from opportunity submission to an understandable analysis result through one workflow.
 
@@ -312,7 +369,7 @@ prototype/
 
 ---
 
-## 11. Prototype Validation
+# 12. Prototype Validation
 
 Prototype validation should use real testers where required by the academic evaluation.
 
@@ -349,7 +406,7 @@ Retest
 
 ---
 
-## 12. Technology Stack
+# 13. Technology Stack
 
 | Layer | Technology |
 |---|---|
@@ -366,7 +423,7 @@ Retest
 
 ---
 
-## 13. Repository Structure
+# 14. Repository Structure
 
 ```text
 Scamcheck/
@@ -408,7 +465,7 @@ Scamcheck/
 
 ---
 
-## 14. Installation and Setup
+# 15. Installation and Setup
 
 ### Prerequisites
 
@@ -461,7 +518,7 @@ npm run lint
 
 ---
 
-## 15. Testing
+# 16. Testing
 
 The repository contains OCR and analysis-flow testing scripts:
 
@@ -490,7 +547,7 @@ Actual pass/fail values should be recorded from the latest test execution before
 
 ---
 
-## 16. Risk Assessment
+# 17. Risk Assessment
 
 ScamCheck is designed to combine multiple categories of evidence rather than rely on a single signal.
 
@@ -518,7 +575,7 @@ A warning signal does not automatically prove that an opportunity is fraudulent.
 
 ---
 
-## 17. Limitations
+# 18. Limitations
 
 1. Assessment quality depends on available evidence.
 2. External information can change over time.
@@ -532,7 +589,7 @@ A warning signal does not automatically prove that an opportunity is fraudulent.
 
 ---
 
-## 18. Privacy, Security and Responsible AI
+# 19. Privacy, Security and Responsible AI
 
 ### Privacy
 
@@ -558,7 +615,7 @@ A warning signal does not automatically prove that an opportunity is fraudulent.
 
 ---
 
-## 19. Future Enhancements
+# 20. Future Enhancements
 
 - Expanded company verification sources
 - Improved recruiter verification
@@ -575,7 +632,7 @@ A warning signal does not automatically prove that an opportunity is fraudulent.
 
 ---
 
-## 20. Academic Documentation
+# 21. Academic Documentation
 
 Academic evidence can be maintained separately from the technical README:
 
@@ -622,11 +679,13 @@ All research evidence must be genuine and anonymized before publication.
 
 ---
 
-## Conclusion
+# Conclusion
 
 ScamCheck addresses a practical problem faced by students: determining whether unfamiliar job and internship opportunities deserve further investigation.
 
-By combining URL intelligence, evidence analysis, company and recruiter verification, OCR, threat intelligence, risk processing, and AI-assisted explanation, ScamCheck provides a centralized and explainable verification workflow.
+At the current **35% development milestone**, the project establishes its core architecture, application foundation, prototype, and initial verification capabilities. Further development will complete the remaining verification, validation, testing, and refinement stages.
+
+By combining URL intelligence, evidence analysis, company and recruiter verification, OCR, threat intelligence, risk processing, and AI-assisted explanation, ScamCheck aims to provide a centralized and explainable verification workflow.
 
 **Faster → More structured → More explainable → Easier to act on**
 
