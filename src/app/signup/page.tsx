@@ -3,347 +3,78 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  ShieldCheck,
-  Eye,
-  EyeOff,
-  ArrowRight,
-  CheckCircle2,
-  AlertCircle,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, LockKeyhole, ShieldCheck, Sparkles, AlertCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function SignupPage() {
   const router = useRouter();
   const supabase = createClient();
-
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isSuccessEmailConfirmation, setIsSuccessEmailConfirmation] = useState(false);
+  const [fullName, setFullName] = useState(""); const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); const [isLoading, setIsLoading] = useState(false); const [errorMessage, setErrorMessage] = useState<string | null>(null); const [isSuccessEmailConfirmation, setIsSuccessEmailConfirmation] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMessage(null);
-
-    if (!fullName.trim()) {
-      setErrorMessage("Please enter your full name.");
-      return;
-    }
-
-    if (!email.trim() || !email.includes("@") || !email.includes(".")) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
-    }
-
-    if (password.length < 6) {
-      setErrorMessage("Password must be at least 6 characters long.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match. Please re-enter.");
-      return;
-    }
-
+    e.preventDefault(); setErrorMessage(null);
+    if (!fullName.trim()) return setErrorMessage("Please enter your full name.");
+    if (!email.trim() || !email.includes("@") || !email.includes(".")) return setErrorMessage("Please enter a valid email address.");
+    if (password.length < 6) return setErrorMessage("Password must be at least 6 characters long.");
+    if (password !== confirmPassword) return setErrorMessage("Passwords do not match. Please re-enter.");
     setIsLoading(true);
-
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email: email.trim(),
-        password,
-        options: {
-          data: {
-            full_name: fullName.trim(),
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-
+      const { data, error } = await supabase.auth.signUp({ email: email.trim(), password, options: { data: { full_name: fullName.trim() }, emailRedirectTo: `${window.location.origin}/auth/callback` } });
       if (error) {
-        if (
-          error.message.toLowerCase().includes("already registered") ||
-          error.message.toLowerCase().includes("unique")
-        ) {
-          setErrorMessage("An account with this email already exists. Please sign in.");
-        } else if (error.message.toLowerCase().includes("password")) {
-          setErrorMessage("Password is too weak. Please use a stronger password.");
-        } else {
-          setErrorMessage(error.message || "Failed to create account. Please try again.");
-        }
-        setIsLoading(false);
-        return;
+        const message = error.message.toLowerCase();
+        if (message.includes("already registered") || message.includes("unique")) setErrorMessage("An account with this email already exists. Please sign in.");
+        else if (message.includes("password")) setErrorMessage("Password is too weak. Please use a stronger password.");
+        else setErrorMessage(error.message || "Failed to create account. Please try again.");
+        setIsLoading(false); return;
       }
-
-      if (data?.user && !data?.session) {
-        setIsSuccessEmailConfirmation(true);
-        setIsLoading(false);
-      } else {
-        router.push("/dashboard");
-        router.refresh();
-      }
-    } catch {
-      setErrorMessage("A network error occurred. Please try again.");
-      setIsLoading(false);
-    }
+      if (data?.user && !data?.session) { setIsSuccessEmailConfirmation(true); setIsLoading(false); } else { router.push("/dashboard"); router.refresh(); }
+    } catch { setErrorMessage("A network error occurred. Please try again."); setIsLoading(false); }
   };
 
   const handleGoogleSignUp = async () => {
     setErrorMessage(null);
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-
-      if (error) {
-        setErrorMessage("Google sign-in is not configured yet.");
-      }
-    } catch {
-      setErrorMessage("Google sign-in is not configured yet.");
-    }
+    try { const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: `${window.location.origin}/auth/callback` } }); if (error) setErrorMessage("Google sign-in is not configured yet."); }
+    catch { setErrorMessage("Google sign-in is not configured yet."); }
   };
 
   return (
-    <div className="min-h-screen bg-app text-primary-color flex flex-col justify-center relative selection:bg-accent-light selection:text-accent-primary transition-colors">
-      {/* Top Header / Back Link */}
-      <div className="absolute top-6 left-6 sm:left-10 z-20">
-        <Link href="/" className="flex items-center gap-2 text-primary-color group">
-          <div className="w-7 h-7 rounded-md bg-accent-light flex items-center justify-center text-accent-primary">
-            <ShieldCheck className="w-4 h-4" strokeWidth={2} />
-          </div>
-          <span className="text-[17px] font-medium tracking-tight">
-            ScamCheck
-          </span>
-        </Link>
-      </div>
-
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 w-full py-16 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          
-          {/* Left Column (Desktop Only) */}
-          <div className="hidden lg:flex lg:col-span-6 flex-col justify-center space-y-7 pr-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-light border border-accent-light text-xs font-medium text-accent-primary w-fit">
-              <span>New member registration</span>
-            </div>
-
-            <div className="space-y-2">
-              <h1 className="text-3xl font-medium text-primary-color tracking-tight">
-                Start protecting your career decisions.
-              </h1>
-              <p className="text-sm text-secondary-color leading-relaxed max-w-md">
-                Join students and job seekers verifying opportunities before sending resumes or sensitive details.
-              </p>
-            </div>
-
-            {/* Checklist */}
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-secondary-color">
-                <CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0" strokeWidth={2} />
-                <span>Instant automated link and company reviews</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-secondary-color">
-                <CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0" strokeWidth={2} />
-                <span>Recruiter impersonation & payment scam flags</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-secondary-color">
-                <CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0" strokeWidth={2} />
-                <span>100% private and confidential analysis</span>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column: Signup Card */}
-          <div className="w-full max-w-md mx-auto lg:col-span-6">
-            <div className="bg-card border border-subtle rounded-2xl p-7 sm:p-9 shadow-card space-y-6">
-              
-              {isSuccessEmailConfirmation ? (
-                <div className="text-center py-4 space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-accent-light text-accent-primary flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-6 h-6" strokeWidth={2} />
-                  </div>
-                  <h2 className="text-lg font-medium text-primary-color">
-                    Account created successfully
-                  </h2>
-                  <p className="text-xs text-secondary-color leading-relaxed">
-                    Please check your email (<span className="text-primary-color font-mono">{email}</span>) to verify your account before signing in.
-                  </p>
-                  <div className="pt-2">
-                    <Link
-                      href="/login"
-                      className="inline-flex items-center justify-center gap-2 py-2.5 px-5 rounded-xl bg-accent-primary bg-accent-hover text-white font-medium text-sm transition-all shadow-soft btn-interaction"
-                    >
-                      <span>Back to login</span>
-                      <ArrowRight className="w-4 h-4" strokeWidth={1.8} />
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {/* Header */}
-                  <div>
-                    <h2 className="text-xl font-medium text-primary-color tracking-tight">
-                      Create your account
-                    </h2>
-                    <p className="text-xs text-secondary-color mt-1">
-                      Start verifying opportunities today
-                    </p>
-                  </div>
-
-                  {/* Error Alert Message */}
-                  {errorMessage && (
-                    <div className="p-3 rounded-xl bg-danger-light border border-danger-light text-danger-color text-xs flex items-start gap-2 animate-in fade-in">
-                      <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" strokeWidth={1.8} />
-                      <span>{errorMessage}</span>
-                    </div>
-                  )}
-
-                  {/* Form */}
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="fullName"
-                        className="block text-xs font-medium text-secondary-color"
-                      >
-                        Full name
-                      </label>
-                      <input
-                        id="fullName"
-                        type="text"
-                        required
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        placeholder="Alex Rivera"
-                        className="w-full bg-muted-custom border border-subtle focus:border-accent-primary rounded-xl px-3.5 py-2.5 text-sm text-primary-color placeholder:text-tertiary-color focus:outline-none focus:ring-2 focus:ring-accent-primary/10 transition-all"
-                      />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="signupEmail"
-                        className="block text-xs font-medium text-secondary-color"
-                      >
-                        Email address
-                      </label>
-                      <input
-                        id="signupEmail"
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@university.edu"
-                        className="w-full bg-muted-custom border border-subtle focus:border-accent-primary rounded-xl px-3.5 py-2.5 text-sm text-primary-color placeholder:text-tertiary-color focus:outline-none focus:ring-2 focus:ring-accent-primary/10 transition-all"
-                      />
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="signupPassword"
-                        className="block text-xs font-medium text-secondary-color"
-                      >
-                        Password
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="signupPassword"
-                          type={showPassword ? "text" : "password"}
-                          required
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          placeholder="Create a password (min 6 chars)"
-                          className="w-full bg-muted-custom border border-subtle focus:border-accent-primary rounded-xl px-3.5 pr-10 py-2.5 text-sm text-primary-color placeholder:text-tertiary-color focus:outline-none focus:ring-2 focus:ring-accent-primary/10 transition-all"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-tertiary-color hover:text-primary-color transition-colors"
-                          aria-label={showPassword ? "Hide password" : "Show password"}
-                        >
-                          {showPassword ? (
-                            <EyeOff className="w-4 h-4" strokeWidth={1.8} />
-                          ) : (
-                            <Eye className="w-4 h-4" strokeWidth={1.8} />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="confirmPassword"
-                        className="block text-xs font-medium text-secondary-color"
-                      >
-                        Confirm password
-                      </label>
-                      <input
-                        id="confirmPassword"
-                        type={showPassword ? "text" : "password"}
-                        required
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Confirm your password"
-                        className="w-full bg-muted-custom border border-subtle focus:border-accent-primary rounded-xl px-3.5 py-2.5 text-sm text-primary-color placeholder:text-tertiary-color focus:outline-none focus:ring-2 focus:ring-accent-primary/10 transition-all"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full py-3 mt-2 rounded-xl bg-accent-primary bg-accent-hover text-white font-medium text-sm transition-all shadow-soft btn-interaction cursor-pointer flex items-center justify-center gap-2 disabled:opacity-70"
-                    >
-                      {isLoading ? (
-                        <span>Creating account...</span>
-                      ) : (
-                        <>
-                          <span>Create account</span>
-                          <ArrowRight className="w-4 h-4" strokeWidth={1.8} />
-                        </>
-                      )}
-                    </button>
-                  </form>
-
-                  {/* Divider */}
-                  <div className="relative my-4">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-subtle" />
-                    </div>
-                    <div className="relative flex justify-center text-xs">
-                      <span className="bg-card px-2 text-tertiary-color">or</span>
-                    </div>
-                  </div>
-
-                  {/* Continue with Google */}
-                  <button
-                    type="button"
-                    onClick={handleGoogleSignUp}
-                    className="w-full py-2.5 px-4 rounded-xl border border-subtle bg-card hover:bg-muted-custom text-primary-color font-medium text-sm transition-colors flex items-center justify-center gap-2.5 cursor-pointer shadow-soft"
-                  >
-                    <span>Continue with Google</span>
-                  </button>
-
-                  <p className="text-center text-xs text-secondary-color">
-                    Already have an account?{" "}
-                    <Link
-                      href="/login"
-                      className="text-accent-primary hover:underline font-medium"
-                    >
-                      Sign in
-                    </Link>
-                  </p>
-                </>
-              )}
-            </div>
-          </div>
-
+    <div className="min-h-screen bg-app text-primary-color grid lg:grid-cols-2">
+      <section className="hidden lg:flex relative surface-grid bg-primary-color text-[var(--bg-primary)] p-12 xl:p-20 flex-col justify-between overflow-hidden">
+        <div className="absolute -right-32 -bottom-32 w-[520px] h-[520px] rounded-full border border-accent-primary/20" />
+        <Link href="/" className="relative flex items-center gap-3 w-fit"><span className="w-10 h-10 rounded-xl bg-accent-primary text-[#07100c] flex items-center justify-center"><ShieldCheck className="w-5 h-5"/></span><span className="font-semibold text-lg">ScamCheck</span></Link>
+        <div className="relative max-w-lg">
+          <div className="flex items-center gap-2 text-accent-primary text-xs font-semibold uppercase tracking-[.18em]"><Sparkles className="w-4 h-4"/> Start with a safer workflow</div>
+          <h1 className="mt-6 text-5xl xl:text-6xl font-semibold tracking-[-.055em] leading-[.95]">Make verification<br/>a habit.</h1>
+          <p className="mt-7 text-[var(--text-secondary)] leading-relaxed max-w-md">Keep your opportunity checks in one place and investigate suspicious offers before you act.</p>
+          <div className="mt-10 space-y-3 text-sm text-[var(--text-secondary)]"><div className="flex gap-3"><CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0"/> Review links and supporting evidence</div><div className="flex gap-3"><CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0"/> Compare company and recruiter signals</div><div className="flex gap-3"><CheckCircle2 className="w-4 h-4 text-accent-primary shrink-0"/> Understand the reasons behind risk flags</div></div>
         </div>
-      </div>
+        <div className="relative text-xs text-[var(--text-tertiary)] flex items-center gap-2"><LockKeyhole className="w-3.5 h-3.5"/> Built as an assistive security tool.</div>
+      </section>
+
+      <main className="min-h-screen flex items-center justify-center px-5 py-12 sm:px-10">
+        <div className="w-full max-w-md">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-xs text-tertiary-color hover:text-primary-color mb-10"><ArrowLeft className="w-3.5 h-3.5"/> Back to home</Link>
+          {isSuccessEmailConfirmation ? (
+            <div className="rounded-3xl border border-subtle bg-card p-8 sm:p-10 shadow-card text-center"><div className="w-14 h-14 rounded-2xl bg-accent-light text-accent-primary flex items-center justify-center mx-auto"><CheckCircle2 className="w-7 h-7"/></div><div className="text-xs uppercase tracking-[.18em] text-accent-primary font-semibold mt-7">Almost there</div><h2 className="mt-3 text-3xl font-semibold tracking-[-.045em]">Confirm your email.</h2><p className="mt-4 text-sm text-secondary-color leading-relaxed">We sent a verification link to <span className="font-medium text-primary-color">{email}</span>. Confirm it, then return to ScamCheck.</p><Link href="/login" className="btn-interaction mt-7 inline-flex items-center gap-2 rounded-xl bg-accent-primary text-white dark:text-[#07100c] px-5 py-3 text-sm font-semibold">Back to login <ArrowRight className="w-4 h-4"/></Link></div>
+          ) : (
+            <>
+              <div className="mb-8"><div className="text-xs uppercase tracking-[.18em] text-accent-primary font-semibold">Create account</div><h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-[-.045em]">Your safer workflow starts here.</h2><p className="mt-3 text-sm text-secondary-color">Create an account to access your ScamCheck workspace.</p></div>
+              {errorMessage && <div className="mb-5 p-3.5 rounded-xl bg-danger-light border border-danger-light text-danger-color text-sm flex gap-2.5"><AlertCircle className="w-4 h-4 shrink-0 mt-0.5"/><span>{errorMessage}</span></div>}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div><label htmlFor="fullName" className="block text-xs font-semibold mb-2">Full name</label><input id="fullName" type="text" required value={fullName} onChange={e => setFullName(e.target.value)} placeholder="Alex Rivera" className="w-full h-12 rounded-xl border border-subtle bg-card px-4 text-sm outline-none focus:border-accent-primary focus:ring-4 focus:ring-accent-primary/10 transition-all"/></div>
+                <div><label htmlFor="signupEmail" className="block text-xs font-semibold mb-2">Email address</label><input id="signupEmail" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="you@university.edu" className="w-full h-12 rounded-xl border border-subtle bg-card px-4 text-sm outline-none focus:border-accent-primary focus:ring-4 focus:ring-accent-primary/10 transition-all"/></div>
+                <div><label htmlFor="signupPassword" className="block text-xs font-semibold mb-2">Password</label><div className="relative"><input id="signupPassword" type={showPassword ? "text" : "password"} required value={password} onChange={e => setPassword(e.target.value)} placeholder="At least 6 characters" className="w-full h-12 rounded-xl border border-subtle bg-card px-4 pr-12 text-sm outline-none focus:border-accent-primary focus:ring-4 focus:ring-accent-primary/10 transition-all"/><button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-0 top-0 h-12 w-12 flex items-center justify-center text-tertiary-color hover:text-primary-color">{showPassword ? <EyeOff className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}</button></div></div>
+                <div><label htmlFor="confirmPassword" className="block text-xs font-semibold mb-2">Confirm password</label><input id="confirmPassword" type={showPassword ? "text" : "password"} required value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="Repeat your password" className="w-full h-12 rounded-xl border border-subtle bg-card px-4 text-sm outline-none focus:border-accent-primary focus:ring-4 focus:ring-accent-primary/10 transition-all"/></div>
+                <button type="submit" disabled={isLoading} className="btn-interaction w-full h-12 rounded-xl bg-accent-primary text-white dark:text-[#07100c] font-semibold text-sm flex items-center justify-center gap-2 disabled:opacity-60">{isLoading ? "Creating account…" : <>Create account <ArrowRight className="w-4 h-4"/></>}</button>
+              </form>
+              <div className="my-7 flex items-center gap-3 text-[11px] text-tertiary-color"><span className="h-px flex-1 bg-subtle"/><span>OR</span><span className="h-px flex-1 bg-subtle"/></div>
+              <button type="button" onClick={handleGoogleSignUp} className="w-full h-12 rounded-xl border border-subtle bg-card hover:bg-muted-custom text-sm font-semibold transition-colors flex items-center justify-center gap-2"><span className="w-5 h-5 rounded-full border border-subtle flex items-center justify-center text-[10px] font-bold">G</span> Continue with Google</button>
+              <p className="mt-7 text-center text-sm text-secondary-color">Already have an account? <Link href="/login" className="font-semibold text-accent-primary hover:underline">Sign in</Link></p>
+            </>
+          )}
+        </div>
+      </main>
     </div>
   );
 }
